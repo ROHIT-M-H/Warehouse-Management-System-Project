@@ -1,0 +1,97 @@
+/* ─── Design Tokens ─────────────────────────────── */
+:root {
+  /* Brand */
+  --brand-50:  #eef2ff;
+  --brand-100: #e0e7ff;
+  --brand-200: #c7d2fe;
+  --brand-400: #818cf8;
+  --brand-500: #6366f1;
+  --brand-600: #4f46e5;
+  --brand-700: #4338ca;
+  --brand-900: #1e1b4b;
+
+  /* Surfaces */
+  --bg-page:   #f8fafc;
+  --bg-card:   #ffffff;
+  --bg-subtle: #f1f5f9;
+  --bg-hover:  #f8fafc;
+
+  /* Text */
+  --text-primary:   #0f172a;
+  --text-secondary: #475569;
+  --text-muted:     #94a3b8;
+  --text-on-brand:  #ffffff;
+
+  /* Borders */
+  --border:        #e2e8f0;
+  --border-strong: #cbd5e1;
+
+  /* Status */
+  --success-bg:   #f0fdf4; --success-text:   #15803d; --success-border: #86efac;
+  --warning-bg:   #fffbeb; --warning-text:   #92400e; --warning-border: #fcd34d;
+  --danger-bg:    #fef2f2; --danger-text:    #dc2626; --danger-border:  #fca5a5;
+  --info-bg:      #eff6ff; --info-text:      #1d4ed8; --info-border:    #93c5fd;
+
+  /* Layout */
+  --sidebar-width: 240px;
+  --radius-sm: 6px;
+  --radius:    8px;
+  --radius-lg: 12px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow:    0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+}
+
+/* Dark mode */
+[data-theme="dark"] {
+  --bg-page:   #0f172a;
+  --bg-card:   #1e293b;
+  --bg-subtle: #0f172a;
+  --bg-hover:  #334155;
+
+  --text-primary:   #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted:     #64748b;
+
+  --border:        #334155;
+  --border-strong: #475569;
+
+  --success-bg:   #052e16; --success-text: #4ade80; --success-border: #166534;
+  --warning-bg:   #422006; --warning-text: #fbbf24; --warning-border: #92400e;
+  --danger-bg:    #450a0a; --danger-text:  #f87171; --danger-border:  #991b1b;
+  --info-bg:      #0c1a3a; --info-text:    #60a5fa; --info-border:    #1e3a8a;
+}
+
+/* ─── Reset ──────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.2s, color 0.2s;
+}
+
+a { color: inherit; text-decoration: none; }
+
+button { cursor: pointer; font-family: inherit; }
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 14px;
+}
+
+/* ─── Scrollbar ─────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+/* ─── Utility ───────────────────────────────────── */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}

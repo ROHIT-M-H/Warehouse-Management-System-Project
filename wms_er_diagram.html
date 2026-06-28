@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<div id="erd" style="overflow-x:auto"></div>
+<script type="module">
+import mermaid from 'https://esm.sh/mermaid@11/dist/mermaid.esm.min.mjs';
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+await document.fonts.ready;
+mermaid.initialize({
+  startOnLoad: false, theme: 'base',
+  fontFamily: '"Anthropic Sans", sans-serif',
+  themeVariables: {
+    darkMode: dark, fontSize: '13px',
+    fontFamily: '"Anthropic Sans", sans-serif',
+    lineColor: dark ? '#9c9a92' : '#73726c',
+    textColor: dark ? '#c2c0b6' : '#3d3d3a',
+  },
+});
+const { svg } = await mermaid.render('erd-svg', `erDiagram
+  USERS {
+    int id PK
+    string email UK
+    string name
+    string role "admin | operator"
+    string status "active | inactive"
+    datetime date_joined
+    datetime last_login
+  }
+  CATEGORIES {
+    int id PK
+    string name UK
+    string description
+    datetime created_at
+  }
+  WAREHOUSES {
+    int id PK
+    string name
+    string address
+    datetime created_at
+  }
+  PRODUCTS {
+    int id PK
+    string name
+    string sku UK
+    int category_id FK
+    decimal unit_price
+    int minimum_stock_level
+    string status "active | inactive"
+    string barcode
+    text description
+    datetime created_at
+  }
+  INVENTORY {
+    int id PK
+    int product_id FK
+    int warehouse_id FK
+    int quantity_available
+    int quantity_reserved
+    datetime last_updated
+  }
+  STOCK_MOVEMENTS {
+    int id PK
+    int product_id FK
+    int warehouse_id FK
+    string movement_type "stock_in | stock_out | adjustment"
+    int quantity
+    string status "pending | completed | cancelled"
+    int assigned_operator_id FK
+    int created_by_id FK
+    int completed_by_id FK
+    string remarks
+    string barcode_scanned
+    datetime completed_at
+    datetime created_at
+  }
+  USERS ||--o{ STOCK_MOVEMENTS : "assigned_operator"
+  USERS ||--o{ STOCK_MOVEMENTS : "created_by"
+  CATEGORIES ||--o{ PRODUCTS : "has"
+  PRODUCTS ||--o{ INVENTORY : "tracked in"
+  WAREHOUSES ||--o{ INVENTORY : "holds"
+  PRODUCTS ||--o{ STOCK_MOVEMENTS : "moved in"
+  WAREHOUSES ||--o{ STOCK_MOVEMENTS : "location of"
+`);
+document.getElementById('erd').innerHTML = svg;
+document.querySelectorAll('#erd svg .node').forEach(node => {
+  const firstPath = node.querySelector('path[d]');
+  if (!firstPath) return;
+  const d = firstPath.getAttribute('d');
+  const nums = d.match(/-?[\d.]+/g)?.map(Number);
+  if (!nums || nums.length < 8) return;
+  const xs = [nums[0], nums[2], nums[4], nums[6]];
+  const ys = [nums[1], nums[3], nums[5], nums[7]];
+  const x = Math.min(...xs), y = Math.min(...ys);
+  const w = Math.max(...xs) - x, h = Math.max(...ys) - y;
+  const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  rect.setAttribute('x', x); rect.setAttribute('y', y);
+  rect.setAttribute('width', w); rect.setAttribute('height', h);
+  rect.setAttribute('rx', '8');
+  for (const a of ['fill','stroke','stroke-width','class','style']) {
+    if (firstPath.hasAttribute(a)) rect.setAttribute(a, firstPath.getAttribute(a));
+  }
+  firstPath.replaceWith(rect);
+});
+document.querySelectorAll('#erd svg .row-rect-odd path, #erd svg .row-rect-even path').forEach(p => {
+  p.setAttribute('stroke', 'none');
+});
+</script>
